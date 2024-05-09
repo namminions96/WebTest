@@ -3,10 +3,9 @@
 }
 
 @model List<WEBTEST.Models.Product>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @{
     var pageNumber = ViewData["PageNumber"] as int? ?? 1;
-    var pageSize = 2; // Số mục trên mỗi trang
+    var pageSize = 2; 
     var totalCount = Model.Count();
     var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
     var products = Model.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -69,7 +68,7 @@
             var masanpham = $("#masanpham").val();
 
             $.ajax({
-                url: "/Product/Details", // Thay đổi đường dẫn đến action trong controller
+                url: "/Product/Details", 
                 type: "GET",
                 data: { tensp: tensp, masanpham: masanpham },
                 error: function (error) {
