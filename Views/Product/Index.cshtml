@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<WEBTEST.Models.Product>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+@{
+    var pageNumber = ViewData["PageNumber"] as int? ?? 1;
+    var pageSize = 2; // Số mục trên mỗi trang
+    var totalCount = Model.Count();
+    var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+    var products = Model.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+}
+<form class="text-center" >
+    <div class="text-center">
+        <h1 class="display-4">
+            @if (TempData["Message"] != null)
+            {
+                <div>Chào @TempData["Message"]</div>
+            }
+        </h1>
+        <p>Tìm Kiếm</p>
+        <p>Tên SP: <input id="tensp" name="tensp" />       MaSP: <input id="masanpham" name="masanpham" />     <button id="searchButton" type="submit"> Tìm Kiếm </button></p>
+
+        <table id="productTable" border="1" align="center">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+       
+            <tbody>
+                @foreach (var item in products)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+     <div class="text-center">
+            @if (totalPages > 1)
+            {
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(pageNumber == i ? "active" : "")">
+                                <a class="page-link" href="?page=@i"> @i </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div> 
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#searchButton").click(function () {
+            var tensp = $("#tensp").val();
+            var masanpham = $("#masanpham").val();
+
+            $.ajax({
+                url: "/Product/Details", // Thay đổi đường dẫn đến action trong controller
+                type: "GET",
+                data: { tensp: tensp, masanpham: masanpham },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+    });
+
+</script>

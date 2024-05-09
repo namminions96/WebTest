@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form class="text-center" method="get" asp-controller="Login" asp-action="Details">
+    <div class="text-center">
+        <h1 class="display-4">Login</h1>
+        <p>Username</p>
+        <input id="Username" name="Username" />
+        <br />
+        <br />
+        <p>Password</p>
+        <input type="password" id="Password" name="Password" />
+        <p><br /><button type="submit">Login</button></p>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+</form>
